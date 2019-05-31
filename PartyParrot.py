@@ -19,11 +19,25 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
-    try:
-        if message.content.startswith('!') and filter(lambda x: message.content[1:] in x, os.listdir(PATH)):
-            await message.channel.send(file=discord.File(PATH + '{}.gif'.format(message.content[1:])))
-    except:
+    if message.content.startswith('!'):
+        await exclamation_message(message)
+
+
+async def exclamation_message(message):
+    result = await recursive_walk(PATH, message)
+    if not result:
         await message.channel.send('Sorry, I don\'t know that bird.')
+
+
+async def recursive_walk(folder, message):
+    for root, directories, files in os.walk(folder):
+        gif = '{}.gif'.format(message.content[1:])
+        if gif in files:
+            await message.channel.send(file=discord.File(os.path.join(folder, gif)))
+            return True
+        if directories:
+            for directory in directories:
+                await recursive_walk(os.path.join(root, directory), message)
 
 
 client.run(PartyParrotConstants.token)
