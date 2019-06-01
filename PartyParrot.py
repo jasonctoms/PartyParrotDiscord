@@ -48,13 +48,8 @@ async def recursive_walk(folder, message):
 
 @client.command()
 async def help(ctx):
-    embed = discord.Embed(title='Party Parrot Bot', description='It uploads party parrot gifs for you. List of commands as follows:')
-    for root, directories, files in os.walk(PATH):
-        for file in files:
-            embed.add_field(name="!"+file[:-4], value=file[:-4])
-            if len(embed.fields) == 25:
-                await ctx.author.send(embed=embed)
-                embed = discord.Embed(title='Party Parrot Bot', description='It uploads party parrot gifs for you. List of commands as follows:')
+    embed = discord.Embed(title='Party Parrot Bot', description='It uploads party parrot gifs for you. List of commands will be the names of the gifs at the website, though some will not be the same as they are presented.')
+    embed.add_field(name="Join the Cult", value="https://cultofthepartyparrot.com/")
     await ctx.author.send(embed=embed)
 
 client.run(PartyParrotConstants.token)
